@@ -17,15 +17,18 @@ const HEROES : Hero [] = [
   selector: 'my-app',
   template: `
           <h1>{{title}}</h1>
-          <h2>{{hero.name}} details!</h2>
-          <div><label>id: </label>{{hero.id}}</div>
-          <div><label>name: </label>{{hero.name}}</div>
-          <div><label>Digite un nombre: </label>
-                <input [(ngModel)]="hero.name" placeholder="name">
+          <div *ngIf="SelectedHero">
+            <h2>{{SelectedHero.name}} details!</h2>
+            <div><label>id: </label>{{SelectedHero.id}}</div>
+            <div><label>Digite un nombre: </label>
+                  <input [(ngModel)]="SelectedHero.name" placeholder="name">
+            </div>
           </div>
           <h2>Lista de Heroes</h2>
           <ul class="heroes">
-            <li *ngFor="let hero of heroes">
+            <li *ngFor="let hero of heroes"
+            [class.selected]="hero === SelectedHero"
+            (click)="onSelect(hero)">
               <span class="badge">{{hero.id}} </span>{{hero.name}}
             </li>
           </ul>
@@ -83,9 +86,9 @@ const HEROES : Hero [] = [
 export class AppComponent  {
   name = 'Angular';
   title = 'Tour of Heroes';
-  hero : Hero = {
-    id: 10,
-    name: 'Windstorm'
-  };
+  SelectedHero : Hero;
   heroes = HEROES;
+  onSelect(hero:Hero): void{
+    this.SelectedHero = hero;
+  }
 }
